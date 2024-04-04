@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import type { NextApiRequest as req, NextApiResponse as res } from "next";
 const logs = [
   {
@@ -25344,6 +25345,7 @@ export default function handler(req: req, res: res<any>) {
       timestamp:
         +(req.query?.startTime || new Date().getTime()) - (logs.length - li),
       severity: severity[Math.floor(Math.random() * severity.length)],
+      trace_id: randomUUID(),
     }))
   );
 }
