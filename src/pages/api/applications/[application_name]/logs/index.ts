@@ -25336,18 +25336,28 @@ const logs = [
     EventTemplate: "Linux agpgart interface v<*>.<*> (c) Dave Jones",
   },
 ];
+
 const severity = ["info", "warn", "debug", "error"];
 
+const random = (input: any[]) =>
+  input[Math.floor(Math.random() * input.length)];
+
 export default function handler(req: req, res: res<any>) {
-  res.status(200).json(
-    logs.map((l, li) => ({
-      ...l,
-      message: l.Content,
-      timestamp:
-        +(req.query?.startTime || new Date().getTime()) - (logs.length - li),
-      severity: severity[Math.floor(Math.random() * severity.length)],
+  let startTime = +(req.query?.startTime || new Date().getTime());
+  let endTime = +(req.query?.endTime || new Date().getTime() + 60 * 60 * 1000);
+  let dataPoints = +(req?.query?.limit || "300") || 300;
+  let out = [];
+  for (let index = 0; index < dataPoints; index++) {
+    let l = random(logs);
+    out.push({
+      body: l.Content,
+      timestamp: Math.round(startTime + (endTime - startTime) / dataPoints),
+      severity: random(severity),
       application: req?.query?.application_name,
+      event_id: l.EventId,
+      event_template: l.EventTemplate,
       trace_id: randomUUID(),
-    }))
-  );
+    });
+  }
+  res.status(200).json(out);
 }
