@@ -25337,7 +25337,16 @@ const logs = [
   },
 ];
 
-const severity = ["info", "warn", "debug", "error"];
+const severity = [
+  "info",
+  "warn",
+  "debug",
+  "error",
+  "info",
+  "info",
+  "info",
+  "warn",
+];
 
 const random = (input: any[]) =>
   input[Math.floor(Math.random() * input.length)];
