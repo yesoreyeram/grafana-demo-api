@@ -25351,7 +25351,8 @@ export default function handler(req: req, res: res<any>) {
     let l = random(logs);
     out.push({
       body: l.Content,
-      timestamp: startTime + Math.round((endTime - startTime) / dataPoints),
+      timestamp:
+        startTime + Math.round((endTime - startTime) / dataPoints) * index,
       severity: random(severity),
       application: req?.query?.application_name,
       event_id: l.EventId,
